@@ -1,0 +1,23 @@
+---
+# MetalLB IPAddressPool - Layer 2 mode
+# Adjust the IP range to match your home network
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: homelab-pool
+  namespace: metallb-system
+spec:
+  addresses:
+    - 192.168.1.200-192.168.1.250
+  autoAssign: true
+
+---
+# L2Advertisement - announces IPs via ARP
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: homelab-l2
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+    - homelab-pool
