@@ -1,0 +1,55 @@
+# ============================================================================
+# Cluster Configuration - homelab
+# Override these values per-environment
+# ============================================================================
+
+cluster:
+  name: homelab
+  domain: homelab.local
+  timezone: Europe/Istanbul
+
+network:
+  podCIDR: 10.42.0.0/16
+  serviceCIDR: 10.43.0.0/16
+  dnsDomain: cluster.local
+  metallb:
+    addressRange: 192.168.1.200-192.168.1.250
+
+storage:
+  defaultClass: local-path
+  reclaimPolicy: Retain
+
+ingress:
+  className: nginx
+  tls:
+    enabled: true
+    clusterIssuer: letsencrypt-prod
+
+monitoring:
+  enabled: true
+  grafana:
+    host: grafana.homelab.local
+    adminPassword: changeme
+  prometheus:
+    retention: 15d
+    storageSize: 20Gi
+  alertmanager:
+    enabled: true
+    storageSize: 5Gi
+
+argocd:
+  enabled: true
+  host: argocd.homelab.local
+  repo: https://github.com/fufuizm/k8s-homelab
+  targetRevision: main
+
+certManager:
+  enabled: true
+  email: sarica.furkan@icloud.com
+  solver: http01
+
+backups:
+  enabled: false
+  schedule: "0 2 * * *"
+  retention: 7d
+  destination: s3://homelab-backups
